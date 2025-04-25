@@ -30,7 +30,7 @@ podman build --security-opt=label=disable --cap-add=all \
   --device /dev/fuse -t localhost/fedora-bootc .
 ```
 
-See the `Containerfile` for more details. This builds the default `standard` image.
+See the `Containerfile` for more details. This builds the `minimal` image.
 
 ## Fedora versions
 
@@ -46,39 +46,6 @@ podman build --from quay.io/fedora/fedora:41 ...
 
 You are of course also free to fork, customize, and build base images yourself.
 See this page[6] of the documentation for more information.
-
-## Tiers
-
-At the current time, there is just one reference base image published
-to the registry. Internally the content set is split up somewhat
-into "tiers", but this is an internal implementation detail and may change
-at any time.
-
-It is planned to rework and improve this in the future, especially
-to support smaller custom images. For more on this, see
-[this tracker issue](https://gitlab.com/fedora/bootc/tracker/-/issues/32).
-
-- **standard**: This image is the default, what is published as
-  <https://quay.io/repository/fedora/fedora-bootc>
-- **minimal**: This content set is more of a convenient centralization point for CI
-  and curation around a package set that is intended as a starting point for
-  a container base image.
-- **minimal-plus**: This content set is intended to be the shared base used by all image-based
-  Fedora variants (IoT, Atomic Desktops, and CoreOS).
-
-**standard** inherits from **minimal-plus** and **minimal-plus** in turn inherit from **minimal**.
-
-All non-trivial changes to **minimal** and **minimal-plus** should be ACKed by at least
-one stakeholder of each Fedora variant WGs.
-
-### Available Tiers + Versions
-
-> **NOTE:** The location and naming of these images is subject to change.
-
-| Version | standard | minimal | minimal-plus |
-| ------- | -------- | ------- | ------------ |
-| Rawhide | quay.io/fedora-testing/fedora-bootc:rawhide-standard | quay.io/fedora-testing/fedora-bootc:rawhide-minimal | quay.io/fedora-testing/fedora-bootc:rawhide-minimal-plus |
-| Fedora 42 | quay.io/fedora-testing/fedora-bootc:42-standard | quay.io/fedora-testing/fedora-bootc:42-minimal | quay.io/fedora-testing/fedora-bootc:42-minimal-plus |
 
 ## More information
 

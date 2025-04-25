@@ -20,7 +20,7 @@ set -xeuo pipefail
 curl -L --fail -o /etc/yum.repos.d/continuous.repo https://copr.fedorainfracloud.org/coprs/g/CoreOS/continuous/repo/fedora-41/group_CoreOS-continuous-fedora-41.repo
 dnf -y install rpm-ostree selinux-policy-targeted
 EORUN
-ARG MANIFEST=fedora-standard
+ARG MANIFEST=fedora-minimal
 # The input git repository has .repo files committed to git rpm-ostree has historically
 # emphasized that.  But here, we are fetching the repos from the container base image.
 # So copy the source, and delete the hardcoded ones in git, and use the container base

@@ -4,13 +4,13 @@ set -xeuo pipefail
 # into their installed location.
 manifestdir=${1:-/usr/share/doc/bootc-base-imagectl/manifests}
 mkdir -p "$manifestdir/"
-for image in minimal standard minimal-plus iot; do
+for image in minimal; do
     # Embed the generic defaults
     cp -a $image $manifestdir/
     # And the Fedora-specific tweaks
     cp -a fedora-$image.yaml $manifestdir/
 done
 # Set the default
-ln -s fedora-standard.yaml $manifestdir/default.yaml
+ln -s fedora-minimal.yaml $manifestdir/default.yaml
 # And install dependency manifests
 cp -a fedora-includes $manifestdir
