@@ -1,0 +1,60 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    io.kubernetes.cri-o.Devices: "/dev/fuse"
+    build.appstudio.openshift.io/repo: https://github.com/ralphbean/fedora-bootc-minimal-image?rev={{revision}}
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/cancel-in-progress: "true"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch
+      == "rawhide"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: fedora-bootc-rawhide-minimal
+    appstudio.openshift.io/component: fedora-bootc-minimal-image
+    pipelines.appstudio.openshift.io/type: build
+  name: fedora-bootc-minimal-image-on-pull-request
+  namespace: ralph-tenant
+spec:
+  params:
+  - name: git-url
+    value: '{{source_url}}'
+  - name: revision
+    value: '{{revision}}'
+  - name: output-image
+    value: quay.io/konflux-fedora/ralph-tenant/fedora-bootc-minimal-image:on-pr-{{revision}}
+  - name: image-expires-after
+    value: 5d
+  - name: dockerfile
+    value: Containerfile
+  - name: path-context
+    value: .
+  - name: privileged-nested
+    value: true
+  - name: build-args
+    value:
+    - REPOS_IMAGE=quay.io/mmartinv/fedora-bootc:rawhide-compose
+  - name: build-platforms
+    value:
+    - linux/amd64
+  pipelineRef:
+    params:
+    - name: bundle
+      value: quay.io/fedora-testing/tekton-catalog:pipeline-buildah-build-bootc-multi-platform-oci-ta
+    - name: name
+      value: buildah-build-bootc-multi-platform-oci-ta
+    - name: kind
+      value: pipeline
+    resolver: bundles
+  # pipelineRef:
+  #   params:
+  #   - name: bundle
+  #     value: quay.io/konflux-ci/tekton-catalog/pipeline-docker-build-multi-platform-oci-ta:devel@sha256:e3eb5dedfe3d0f0ee54cbf9fcbd772744c4097c781a4ffa01f2b43de55957aa1
+  #   - name: name
+  #     value: docker-build-multi-platform-oci-ta
+  #   - name: kind
+  #     value: pipeline
+  #   resolver: bundles
