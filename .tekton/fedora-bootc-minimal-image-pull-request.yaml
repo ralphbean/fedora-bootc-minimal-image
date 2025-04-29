@@ -37,6 +37,9 @@ spec:
   - name: build-args
     value:
     - REPOS_IMAGE=quay.io/mmartinv/fedora-bootc:rawhide-compose@sha256:6044bf3c4fe29fcf67ef3aac3231b9eea962698a32341cff5adbf4f3c7edce9d
+  - name: build-platforms
+    value:
+    - linux/amd64
   pipelineRef:
     params:
     - name: bundle
