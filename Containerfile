@@ -13,7 +13,7 @@ ARG REPOS_IMAGE=quay.io/fedora/fedora:rawhide
 FROM $REPOS_IMAGE as repos
 
 # BOOTSTRAPPING: This can be any image that has rpm-ostree and selinux-policy-targeted.
-FROM quay.io/fedora/fedora:41 as builder
+FROM quay.io/fedora/fedora:45 as builder
 # However we also pull rpm-ostree from git main to get some fixes for now
 RUN <<EORUN
 set -xeuo pipefail
